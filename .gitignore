@@ -163,4 +163,4 @@ pip-log.txt
 .DS_Store
 
 packages
-Play.Tests/IntegrationTestUrl.cs
+AkavacheExplorer/.nuget
