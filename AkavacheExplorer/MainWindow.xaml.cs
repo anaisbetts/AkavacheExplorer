@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AkavacheExplorer.ViewModels;
 
 namespace AkavacheExplorer
 {
@@ -19,8 +20,11 @@ namespace AkavacheExplorer
     /// </summary>
     public partial class MainWindow : Window
     {
+        public AppBootstrapper ViewModel { get; protected set; }
+
         public MainWindow()
         {
+            ViewModel = new AppBootstrapper();
             InitializeComponent();
         }
     }
