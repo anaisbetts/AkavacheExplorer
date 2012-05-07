@@ -65,8 +65,12 @@ namespace AkavacheExplorer.ViewModels
 
         IObservable<IBlobCache> openAkavacheCache(bool openAsEncrypted)
         {
-            return Observable.Start(() => openAsEncrypted ?
+            var ret = Observable.Start(() => openAsEncrypted ?
                 (IBlobCache)new ReadonlyEncryptedBlobCache(CachePath) : (IBlobCache)new ReadonlyBlobCache(CachePath));
+                
+            return ret.SelectMany(x => x.GetAllKeys().Any() ? 
+                Observable.Return(x) : 
+                Observable.Throw<IBlobCache>(new Exception("Cache has no items")));
         }
     }
 }
