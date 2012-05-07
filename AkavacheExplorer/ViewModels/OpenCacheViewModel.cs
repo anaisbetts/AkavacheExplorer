@@ -61,7 +61,8 @@ namespace AkavacheExplorer.ViewModels
 
                     appState.CurrentCache = x;
                     hostScreen.Router.Navigate.Execute(RxApp.GetService<ICacheViewModel>());
-                });        }
+                });
+        }
 
         IObservable<IBlobCache> openAkavacheCache(bool openAsEncrypted)
         {

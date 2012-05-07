@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Routing;
 
@@ -33,7 +34,9 @@ namespace AkavacheExplorer.ViewModels
         {
             HostScreen = hostScreen;
 
-            appState.WhenAny(x => x.CachePath, x => "cache_" + (new DirectoryInfo(x.Value)).Name)
+            appState.WhenAny(x => x.CachePath, x => x.Value)
+                .Where(x => !String.IsNullOrWhiteSpace(x))
+                .Select(x => (new DirectoryInfo(x)).Name)
                 .ToProperty(this, x => x.UrlPathSegment);
 
             Keys = new ReactiveCollection<string>();
