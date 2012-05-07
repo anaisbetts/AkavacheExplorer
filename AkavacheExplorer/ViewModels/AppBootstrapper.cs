@@ -1,3 +1,4 @@
+using Akavache;
 using AkavacheExplorer.Views;
 using Ninject;
 using ReactiveUI;
@@ -5,9 +6,27 @@ using ReactiveUI.Routing;
 
 namespace AkavacheExplorer.ViewModels
 {
-    public class AppBootstrapper : ReactiveObject, IScreen
+    public interface IAppState : IReactiveNotifyPropertyChanged
+    {
+        IBlobCache CurrentCache { get; set; }
+        string CachePath { get; set; }
+    }
+
+    public class AppBootstrapper : ReactiveObject, IScreen, IAppState
     {
         public IRoutingState Router { get; protected set; }
+
+        IBlobCache _CurrentCache;
+        public IBlobCache CurrentCache {
+            get { return _CurrentCache; }
+            set { this.RaiseAndSetIfChanged(x => x.CurrentCache, value); }
+        }
+
+        string _CachePath;
+        public string CachePath {
+            get { return _CachePath; }
+            set { this.RaiseAndSetIfChanged(x => x.CachePath, value); }
+        }
 
         public AppBootstrapper(IKernel kernel = null, IRoutingState router = null)
         {
@@ -26,8 +45,10 @@ namespace AkavacheExplorer.ViewModels
             var ret = new StandardKernel();
 
             ret.Bind<IScreen>().ToConstant(this);
+            ret.Bind<IAppState>().ToConstant(this);
             ret.Bind<IOpenCacheViewModel>().To<OpenCacheViewModel>();
             ret.Bind<IViewForViewModel<OpenCacheViewModel>>().To<OpenCacheView>();
+            ret.Bind<ICacheViewModel>().To<CacheViewModel>();
 
             return ret;
         }
