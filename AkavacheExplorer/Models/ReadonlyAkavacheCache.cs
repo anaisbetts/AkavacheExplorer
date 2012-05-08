@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using ReactiveUI;
 
 namespace Akavache.Models
@@ -16,6 +17,12 @@ namespace Akavache.Models
 
         public IObservable<Stream> SafeOpenFileAsync(string path, FileMode mode, FileAccess access, FileShare share, IScheduler scheduler)
         {
+            if (mode == FileMode.Create || 
+                mode == FileMode.CreateNew ||
+                (mode == FileMode.OpenOrCreate && !File.Exists(path)))
+            {
+                return Observable.Throw<Stream>(new Exception("Read only mode"));
+            }
             return _inner.SafeOpenFileAsync(path, mode, FileAccess.Read, share, scheduler);
         }
 
