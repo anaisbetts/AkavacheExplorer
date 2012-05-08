@@ -51,6 +51,9 @@ namespace AkavacheExplorer.ViewModels
             ret.Bind<ICacheViewModel>().To<CacheViewModel>();
             ret.Bind<IViewForViewModel<CacheViewModel>>().To<CacheView>();
 
+            ret.Bind<ICacheValueViewModel>().To<TextValueViewModel>().Named("Text");
+            ret.Bind<IViewForViewModel<TextValueViewModel>>().To<TextValueView>();
+
             return ret;
         }
     }

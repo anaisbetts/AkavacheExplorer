@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="AkavacheExplorer.Views.TextValueView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" x:Name="userControl"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid DataContext="{Binding ViewModel, ElementName=userControl}">
+        <TextBox IsReadOnly="True" Text="{Binding TextToDisplay, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow" />
+    </Grid>
+</UserControl>

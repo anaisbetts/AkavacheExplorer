@@ -11,6 +11,7 @@ namespace AkavacheExplorer.ViewModels
     {
         ReactiveCollection<string> Keys { get; }
         string SelectedKey { get; set; }
+        ICacheValueViewModel SelectedValue { get; }
     }
 
     public class CacheViewModel : ReactiveObject, ICacheViewModel
@@ -21,6 +22,11 @@ namespace AkavacheExplorer.ViewModels
         public string SelectedKey {
             get { return _SelectedKey; }
             set { this.RaiseAndSetIfChanged(x => x.SelectedKey, value); }
+        }
+
+        ObservableAsPropertyHelper<ICacheValueViewModel> _SelectedValue;
+        public ICacheValueViewModel SelectedValue {
+            get { return _SelectedValue.Value; }
         }
 
         ObservableAsPropertyHelper<string> _UrlPathSegment;
@@ -44,6 +50,20 @@ namespace AkavacheExplorer.ViewModels
                 Keys.Clear();
                 cache.GetAllKeys().ForEach(x => Keys.Add(x));
             });
+
+            this.WhenAny(x => x.SelectedKey, x => x.Value)
+                .Where(x => x != null)
+                .SelectMany(x => appState.CurrentCache.GetAsync(x))
+                .Select(createValueViewModel)
+                .LoggedCatch(this, Observable.Return<ICacheValueViewModel>(null))
+                .ToProperty(this, x => x.SelectedValue);
+        }
+
+        static ICacheValueViewModel createValueViewModel(byte[] x)
+        {
+            var ret = RxApp.GetService<ICacheValueViewModel>("Text");
+            ret.Model = x;
+            return ret;
         }
     }
 }

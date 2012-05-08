@@ -97,15 +97,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\ViewModelViewHost.cs" />
     <Compile Include="Models\ReadonlyAkavacheCache.cs" />
     <Compile Include="ViewModels\AppBootstrapper.cs" />
     <Compile Include="ViewModels\CacheViewModel.cs" />
     <Compile Include="ViewModels\OpenCacheViewModel.cs" />
+    <Compile Include="ViewModels\ValueDisplayViewModels.cs" />
     <Compile Include="Views\CacheView.xaml.cs">
       <DependentUpon>CacheView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OpenCacheView.xaml.cs">
       <DependentUpon>OpenCacheView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TextValueView.xaml.cs">
+      <DependentUpon>TextValueView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -124,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OpenCacheView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TextValueView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
