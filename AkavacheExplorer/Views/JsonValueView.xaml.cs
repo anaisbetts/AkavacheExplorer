@@ -17,25 +17,25 @@ using ReactiveUI.Routing;
 namespace AkavacheExplorer.Views
 {
     /// <summary>
-    /// Interaction logic for TextValueView.xaml
+    /// Interaction logic for JsonValueView.xaml
     /// </summary>
-    public partial class TextValueView : UserControl, IViewForViewModel<TextValueViewModel>
+    public partial class JsonValueView : UserControl, IViewForViewModel<JsonValueViewModel>
     {
-        public TextValueView()
+        public JsonValueView()
         {
             InitializeComponent();
         }
 
-        public TextValueViewModel ViewModel {
-            get { return (TextValueViewModel)GetValue(ViewModelProperty); }
+        public JsonValueViewModel ViewModel {
+            get { return (JsonValueViewModel)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(TextValueViewModel), typeof(TextValueView), new UIPropertyMetadata(null));
+            DependencyProperty.Register("ViewModel", typeof(JsonValueViewModel), typeof(JsonValueView), new UIPropertyMetadata(null));
 
         object IViewForViewModel.ViewModel { 
             get { return ViewModel; }
-            set { ViewModel = (TextValueViewModel) value; } 
+            set { ViewModel = (JsonValueViewModel) value; } 
         }
     }
 }
