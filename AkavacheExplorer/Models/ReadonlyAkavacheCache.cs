@@ -37,10 +37,37 @@ namespace Akavache.Models
         }
     }
 
+    public class BeginningOfTimeScheduler : IScheduler
+    {
+        IScheduler _inner;
+
+        public BeginningOfTimeScheduler(IScheduler inner)
+        {
+            _inner = inner;
+        }
+
+        public IDisposable Schedule<TState>(TState state, Func<IScheduler, TState, IDisposable> action)
+        {
+            return _inner.Schedule(state, action);
+        }
+
+        public IDisposable Schedule<TState>(TState state, TimeSpan dueTime, Func<IScheduler, TState, IDisposable> action)
+        {
+            return _inner.Schedule(state, dueTime, action);
+        }
+
+        public IDisposable Schedule<TState>(TState state, DateTimeOffset dueTime, Func<IScheduler, TState, IDisposable> action)
+        {
+            return _inner.Schedule(state, dueTime, action);
+        }
+
+        public DateTimeOffset Now { get { return DateTimeOffset.MinValue; } }
+    }
+
     public class ReadonlyBlobCache : PersistentBlobCache
     {
         public ReadonlyBlobCache(string cacheDirectory, IScheduler scheduler = null)
-            : base(cacheDirectory, new ReadonlyFileSystemProvider(), scheduler)
+            : base(cacheDirectory, new ReadonlyFileSystemProvider(), new BeginningOfTimeScheduler(scheduler ?? RxApp.TaskpoolScheduler))
         {
         }
     }
@@ -48,7 +75,7 @@ namespace Akavache.Models
     public class ReadonlyEncryptedBlobCache : EncryptedBlobCache
     {
         public ReadonlyEncryptedBlobCache(string cacheDirectory, IScheduler scheduler = null)
-            : base(cacheDirectory, new ReadonlyFileSystemProvider(), scheduler)
+            : base(cacheDirectory, new ReadonlyFileSystemProvider(), new BeginningOfTimeScheduler(scheduler ?? RxApp.TaskpoolScheduler))
         {
         }
     }
