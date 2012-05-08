@@ -16,12 +16,13 @@
 				<ColumnDefinition Width="0.579*"/>
 			</Grid.ColumnDefinitions>
 
-			<ListBox ItemsSource="{Binding Keys}" SelectedItem="{Binding SelectedKey, Mode=TwoWay}" Margin="0,0,6,0" Grid.RowSpan="2" />
+			<ListBox ItemsSource="{Binding Keys}" SelectedItem="{Binding SelectedKey, Mode=TwoWay}" Margin="0,0,6,0" Grid.Row="1" />
 			<GridSplitter Width="5" HorizontalAlignment="Right" Background="Gray" Grid.RowSpan="2" />
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <RadioButton x:Name="textRadio" Content="Text" Margin="16,0,0,0" IsChecked="True" Tag="Text"/>
                 <RadioButton x:Name="jsonRadio" Content="JSON" Margin="16,0,0,0" Tag="Json" />
+                <RadioButton x:Name="imageRadio" Content="Image" Margin="16,0,0,0" Tag="Image" />
             </StackPanel>
 
             <local:ViewModelViewHost ViewModel="{Binding SelectedValue}" Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" />

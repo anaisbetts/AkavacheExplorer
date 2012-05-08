@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Akavache;
 using Newtonsoft.Json;
 using ReactiveUI;
 
@@ -68,6 +72,45 @@ namespace AkavacheExplorer.ViewModels
                     }
                 })
                 .ToProperty(this, x => x.TextToDisplay);
+        }
+    }
+
+    public class ImageValueViewModel : ReactiveObject, ICacheValueViewModel
+    {
+        byte[] _Model;
+        public byte[] Model
+        {
+            get { return _Model; }
+            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+        }
+
+        ObservableAsPropertyHelper<BitmapImage> _Image;
+        public BitmapImage Image {
+            get { return _Image.Value; }
+        }
+
+        ObservableAsPropertyHelper<Visibility> _ImageVisibility;
+        public Visibility ImageVisibility {
+            get { return _ImageVisibility.Value; }
+        }
+
+        ObservableAsPropertyHelper<Visibility> _ErrorVisibility;
+        public Visibility ErrorVisibility {
+            get { return _ErrorVisibility.Value; }
+        }
+
+        public ImageValueViewModel()
+        {
+            this.WhenAny(x => x.Model, x => x.Value)
+                .Where(x => x != null)
+                .SelectMany(BitmapImageMixin.BytesToImage)
+                .LoggedCatch(this, Observable.Return<BitmapImage>(null))
+                .ToProperty(this, x => x.Image);
+
+            this.WhenAny(x => x.Image, x => x.Value != null ? Visibility.Visible : Visibility.Hidden)
+                .ToProperty(this, x => x.ImageVisibility);
+            this.WhenAny(x => x.ImageVisibility, x => x.Value == Visibility.Visible ? Visibility.Hidden : Visibility.Visible)
+                .ToProperty(this, x => x.ErrorVisibility);
         }
     }
 }

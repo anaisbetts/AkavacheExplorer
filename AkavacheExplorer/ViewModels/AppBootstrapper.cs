@@ -53,8 +53,10 @@ namespace AkavacheExplorer.ViewModels
 
             ret.Bind<ICacheValueViewModel>().To<TextValueViewModel>().Named("Text");
             ret.Bind<ICacheValueViewModel>().To<JsonValueViewModel>().Named("Json");
+            ret.Bind<ICacheValueViewModel>().To<ImageValueViewModel>().Named("Image");
             ret.Bind<IViewForViewModel<TextValueViewModel>>().To<TextValueView>();
             ret.Bind<IViewForViewModel<JsonValueViewModel>>().To<JsonValueView>();
+            ret.Bind<IViewForViewModel<ImageValueViewModel>>().To<ImageValueView>();
 
             return ret;
         }
