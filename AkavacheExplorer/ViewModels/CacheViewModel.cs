@@ -12,6 +12,7 @@ namespace AkavacheExplorer.ViewModels
         ReactiveCollection<string> Keys { get; }
         string SelectedKey { get; set; }
         ICacheValueViewModel SelectedValue { get; }
+        string SelectedViewer { get; set; }
     }
 
     public class CacheViewModel : ReactiveObject, ICacheViewModel
@@ -27,6 +28,12 @@ namespace AkavacheExplorer.ViewModels
         ObservableAsPropertyHelper<ICacheValueViewModel> _SelectedValue;
         public ICacheValueViewModel SelectedValue {
             get { return _SelectedValue.Value; }
+        }
+
+        string _SelectedViewer;
+        public string SelectedViewer {
+            get { return _SelectedViewer; }
+            set { this.RaiseAndSetIfChanged(x => x.SelectedViewer, value); }
         }
 
         ObservableAsPropertyHelper<string> _UrlPathSegment;
@@ -51,17 +58,19 @@ namespace AkavacheExplorer.ViewModels
                 cache.GetAllKeys().ForEach(x => Keys.Add(x));
             });
 
-            this.WhenAny(x => x.SelectedKey, x => x.Value)
-                .Where(x => x != null)
+            SelectedViewer = "Text";
+
+            this.WhenAny(x => x.SelectedKey, x => x.SelectedViewer, (k,v) => k.Value)
+                .Where(x => x != null && SelectedViewer != null)
                 .SelectMany(x => appState.CurrentCache.GetAsync(x))
-                .Select(createValueViewModel)
+                .Select(x => createValueViewModel(x, SelectedViewer))
                 .LoggedCatch(this, Observable.Return<ICacheValueViewModel>(null))
                 .ToProperty(this, x => x.SelectedValue);
         }
 
-        static ICacheValueViewModel createValueViewModel(byte[] x)
+        static ICacheValueViewModel createValueViewModel(byte[] x, string viewerType)
         {
-            var ret = RxApp.GetService<ICacheValueViewModel>("Text");
+            var ret = RxApp.GetService<ICacheValueViewModel>(viewerType);
             ret.Model = x;
             return ret;
         }

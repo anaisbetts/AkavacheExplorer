@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using ReactiveUI;
 
 namespace AkavacheExplorer.ViewModels
@@ -32,6 +33,39 @@ namespace AkavacheExplorer.ViewModels
                 .Select(x => {
                     var ret = Encoding.UTF8.GetString(x);
                     return ret;
+                })
+                .ToProperty(this, x => x.TextToDisplay);
+        }
+    }
+
+    public class JsonValueViewModel : ReactiveObject, ICacheValueViewModel
+    {
+        byte[] _Model;
+        public byte[] Model {
+            get { return _Model; }
+            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+        }
+
+        ObservableAsPropertyHelper<string> _TextToDisplay;
+        public string TextToDisplay {
+            get { return _TextToDisplay.Value; }
+        }
+
+        public JsonValueViewModel()
+        {
+            this.WhenAny(x => x.Model, x => x.Value)
+                .Where(x => x != null)
+                .Select(x => {
+                    var ret = Encoding.UTF8.GetString(x);
+                    return ret;
+                })
+                .Select<string, string>(x => {
+                    try {
+                        dynamic ret = JsonConvert.DeserializeObject(x);
+                        return JsonConvert.SerializeObject(ret, Formatting.Indented);
+                    } catch (Exception ex) {
+                        return ex.ToString();
+                    }
                 })
                 .ToProperty(this, x => x.TextToDisplay);
         }
