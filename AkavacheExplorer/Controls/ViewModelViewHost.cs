@@ -39,8 +39,7 @@ namespace AkavacheExplorer.Controls
 
         public ViewModelViewHost()
         {
-            var latestViewModel = this.ObservableFromDP(x => x.ViewModel)
-                .Select(x => x.Value)
+            var latestViewModel = this.WhenAny(x => x.ViewModel, x => x.Value)
                 .StartWith((IReactiveNotifyPropertyChanged) null);
 
             latestViewModel.Subscribe(vm =>

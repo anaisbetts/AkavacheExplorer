@@ -3,6 +3,7 @@ using System.IO;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using ReactiveUI;
+using System.Reactive;
 
 namespace Akavache.Models
 {
@@ -26,14 +27,30 @@ namespace Akavache.Models
             return _inner.SafeOpenFileAsync(path, mode, FileAccess.Read, share, scheduler);
         }
 
-        public void CreateRecursive(string path)
+        public IObservable<Unit> CreateRecursive(string path)
         {
-            _inner.CreateRecursive(path);
+            return _inner.CreateRecursive(path);
         }
 
-        public void Delete(string path)
+        public IObservable<Unit> Delete(string path)
         {
             this.Log().Info("Tried to delete {0} but we're in read-only mode", path);
+            return Observable.Return(Unit.Default);
+        }
+
+        public string GetDefaultLocalMachineCacheDirectory()
+        {
+            return _inner.GetDefaultLocalMachineCacheDirectory();
+        }
+
+        public string GetDefaultRoamingCacheDirectory()
+        {
+            return _inner.GetDefaultRoamingCacheDirectory();
+        }
+
+        public string GetDefaultSecretCacheDirectory()
+        {
+            return _inner.GetDefaultSecretCacheDirectory();
         }
     }
 

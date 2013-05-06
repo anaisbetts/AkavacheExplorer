@@ -13,13 +13,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AkavacheExplorer.ViewModels;
 using ReactiveUI.Routing;
+using ReactiveUI;
 
 namespace AkavacheExplorer.Views
 {
     /// <summary>
     /// Interaction logic for JsonValueView.xaml
     /// </summary>
-    public partial class JsonValueView : UserControl, IViewForViewModel<JsonValueViewModel>
+    public partial class JsonValueView : UserControl, IViewFor<JsonValueViewModel>
     {
         public JsonValueView()
         {
@@ -33,7 +34,7 @@ namespace AkavacheExplorer.Views
         public static readonly DependencyProperty ViewModelProperty =
             DependencyProperty.Register("ViewModel", typeof(JsonValueViewModel), typeof(JsonValueView), new UIPropertyMetadata(null));
 
-        object IViewForViewModel.ViewModel { 
+        object IViewFor.ViewModel { 
             get { return ViewModel; }
             set { ViewModel = (JsonValueViewModel) value; } 
         }

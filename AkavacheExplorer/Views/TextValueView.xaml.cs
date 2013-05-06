@@ -13,13 +13,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AkavacheExplorer.ViewModels;
 using ReactiveUI.Routing;
+using ReactiveUI;
 
 namespace AkavacheExplorer.Views
 {
     /// <summary>
     /// Interaction logic for TextValueView.xaml
     /// </summary>
-    public partial class TextValueView : UserControl, IViewForViewModel<TextValueViewModel>
+    public partial class TextValueView : UserControl, IViewFor<TextValueViewModel>
     {
         public TextValueView()
         {
@@ -33,7 +34,7 @@ namespace AkavacheExplorer.Views
         public static readonly DependencyProperty ViewModelProperty =
             DependencyProperty.Register("ViewModel", typeof(TextValueViewModel), typeof(TextValueView), new UIPropertyMetadata(null));
 
-        object IViewForViewModel.ViewModel { 
+        object IViewFor.ViewModel { 
             get { return ViewModel; }
             set { ViewModel = (TextValueViewModel) value; } 
         }

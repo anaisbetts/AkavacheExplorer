@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AkavacheExplorer.ViewModels;
+using ReactiveUI;
 using ReactiveUI.Routing;
 
 namespace AkavacheExplorer.Views
@@ -19,7 +20,7 @@ namespace AkavacheExplorer.Views
     /// <summary>
     /// Interaction logic for OpenCacheView.xaml
     /// </summary>
-    public partial class OpenCacheView : UserControl, IViewForViewModel<OpenCacheViewModel>
+    public partial class OpenCacheView : UserControl, IViewFor<OpenCacheViewModel>
     {
         public OpenCacheView()
         {
@@ -33,7 +34,7 @@ namespace AkavacheExplorer.Views
         public static readonly DependencyProperty ViewModelProperty =
             DependencyProperty.Register("ViewModel", typeof(OpenCacheViewModel), typeof(OpenCacheView), new UIPropertyMetadata(null));
 
-        object IViewForViewModel.ViewModel { 
+        object IViewFor.ViewModel { 
             get { return ViewModel; }
             set { ViewModel = (OpenCacheViewModel) value; } 
         }
