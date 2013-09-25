@@ -49,7 +49,7 @@ namespace AkavacheExplorer.ViewModels
             appState.WhenAny(x => x.CachePath, x => x.Value)
                 .Where(x => !String.IsNullOrWhiteSpace(x))
                 .Select(x => (new DirectoryInfo(x)).Name)
-                .ToProperty(this, x => x.UrlPathSegment);
+                .ToProperty(this, x => x.UrlPathSegment, out _UrlPathSegment);
 
             Keys = new ReactiveList<string>();
             appState.WhenAny(x => x.CurrentCache, x => x.Value)

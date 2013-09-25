@@ -31,7 +31,7 @@
                 <RadioButton x:Name="imageRadio" Content="Image" Margin="16,0,0,0" Tag="Image" />
             </StackPanel>
 
-            <rxui:ViewModelViewHost x:Name="SelectedKey" Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" />
+            <rxui:ViewModelViewHost x:Name="SelectedValue" Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" />
         </Grid>
     </Border>
 </UserControl>

@@ -40,7 +40,7 @@ namespace AkavacheExplorer.ViewModels
                     var ret = Encoding.UTF8.GetString(x);
                     return ret;
                 })
-                .ToProperty(this, x => x.TextToDisplay);
+                .ToProperty(this, x => x.TextToDisplay, out _TextToDisplay);
         }
     }
 
@@ -73,7 +73,7 @@ namespace AkavacheExplorer.ViewModels
                         return ex.ToString();
                     }
                 })
-                .ToProperty(this, x => x.TextToDisplay);
+                .ToProperty(this, x => x.TextToDisplay, out _TextToDisplay);
         }
     }
 
@@ -107,12 +107,12 @@ namespace AkavacheExplorer.ViewModels
                 .Where(x => x != null)
                 .SelectMany(x => BitmapLoader.Current.Load(new MemoryStream(x), null, null))
                 .LoggedCatch(this, Observable.Return<IBitmap>(null))
-                .ToProperty(this, x => x.Image);
+                .ToProperty(this, x => x.Image, out _Image);
 
             this.WhenAny(x => x.Image, x => x.Value != null ? Visibility.Visible : Visibility.Hidden)
-                .ToProperty(this, x => x.ImageVisibility);
+                .ToProperty(this, x => x.ImageVisibility, out _ImageVisibility);
             this.WhenAny(x => x.ImageVisibility, x => x.Value == Visibility.Visible ? Visibility.Hidden : Visibility.Visible)
-                .ToProperty(this, x => x.ErrorVisibility);
+                .ToProperty(this, x => x.ErrorVisibility, out _ErrorVisibility);
         }
     }
 }

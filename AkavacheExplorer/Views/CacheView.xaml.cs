@@ -27,7 +27,7 @@ namespace AkavacheExplorer.Views
 
             this.OneWayBind(ViewModel, x => x.Keys, x => x.Keys.ItemsSource);
             this.Bind(ViewModel, x => x.SelectedKey, x => x.Keys.SelectedItem);
-            this.OneWayBind(ViewModel, x => x.SelectedKey, x => x.SelectedKey.ViewModel);
+            this.OneWayBind(ViewModel, x => x.SelectedValue, x => x.SelectedValue.ViewModel);
         }
 
         public CacheViewModel ViewModel {
