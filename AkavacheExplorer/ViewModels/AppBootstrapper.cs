@@ -37,7 +37,7 @@ namespace AkavacheExplorer.ViewModels
 
         IDependencyResolver createStandardKernel()
         {
-            var r = new ModernDependencyResolver();
+            var r = RxApp.MutableResolver;
 
             r.RegisterConstant(this, typeof(IScreen));
 
