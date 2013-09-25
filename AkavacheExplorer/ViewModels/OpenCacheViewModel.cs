@@ -69,7 +69,7 @@ namespace AkavacheExplorer.ViewModels
                     }
 
                     appState.CurrentCache = x;
-                    hostScreen.Router.Navigate.Execute(RxApp.DependencyResolver.GetService<ICacheViewModel>());
+                    hostScreen.Router.Navigate.Execute(new CacheViewModel(HostScreen, appState));
                 });
         }
 

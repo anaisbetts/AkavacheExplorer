@@ -69,9 +69,18 @@ namespace AkavacheExplorer.ViewModels
 
         static ICacheValueViewModel createValueViewModel(byte[] x, string viewerType)
         {
-            var ret = RxApp.DependencyResolver.GetService<ICacheValueViewModel>(viewerType);
-            ret.Model = x;
-            return ret;
+            // NB: This trick is bad and I should feel bad. These strings come 
+            // from the Tag property in CacheView.xaml.
+            switch (viewerType) {
+            case "Text":
+                return new TextValueViewModel() { Model = x };
+            case "Json":
+                return new JsonValueViewModel() { Model = x };
+            case "Image":
+                return new ImageValueViewModel() { Model = x };
+            default:
+                throw new NotImplementedException();
+            }
         }
     }
 }

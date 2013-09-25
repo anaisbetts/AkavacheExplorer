@@ -32,7 +32,7 @@ namespace AkavacheExplorer.ViewModels
             Router = router ?? new RoutingState();
 
             // Our first screen is "Open cache"
-            Router.Navigate.Execute(RxApp.DependencyResolver.GetService<IOpenCacheViewModel>());
+            Router.Navigate.Execute(new OpenCacheViewModel(this, this));
         }
 
         IDependencyResolver createStandardKernel()
