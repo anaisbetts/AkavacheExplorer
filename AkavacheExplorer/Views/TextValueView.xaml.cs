@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using AkavacheExplorer.ViewModels;
-using ReactiveUI.Routing;
 using ReactiveUI;
 
 namespace AkavacheExplorer.Views
@@ -25,6 +13,8 @@ namespace AkavacheExplorer.Views
         public TextValueView()
         {
             InitializeComponent();
+
+            this.OneWayBind(ViewModel, x => x.TextToDisplay, x => x.TextToDisplay.Text);
         }
 
         public TextValueViewModel ViewModel {

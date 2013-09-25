@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" x:Name="userControl"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid DataContext="{Binding ViewModel, ElementName=userControl}">
+    <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
-            <TextBox IsReadOnly="True" Text="{Binding TextToDisplay, Mode=OneWay}" FontFamily="Consolas" TextWrapping="WrapWithOverflow" />
+            <TextBox x:Name="TextToDisplay" IsReadOnly="True" FontFamily="Consolas" TextWrapping="WrapWithOverflow" />
         </ScrollViewer>
     </Grid>
 </UserControl>

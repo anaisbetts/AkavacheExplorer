@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using AkavacheExplorer.ViewModels;
 using ReactiveUI;
-using ReactiveUI.Routing;
 
 namespace AkavacheExplorer.Views
 {
@@ -25,6 +13,12 @@ namespace AkavacheExplorer.Views
         public OpenCacheView()
         {
             InitializeComponent();
+
+            this.Bind(ViewModel, x => x.CachePath, x => x.CachePath.Text);
+            this.Bind(ViewModel, x => x.OpenAsEncryptedCache, x => x.OpenAsEncryptedCache.IsChecked);
+            this.Bind(ViewModel, x => x.OpenAsSqlite3Cache, x => x.OpenAsSqlite3Cache.IsChecked);
+
+            this.BindCommand(ViewModel, x => x.OpenCache, x => x.OpenCache);
         }
 
         public OpenCacheViewModel ViewModel {

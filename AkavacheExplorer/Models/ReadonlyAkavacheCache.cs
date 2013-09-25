@@ -4,6 +4,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using ReactiveUI;
 using System.Reactive;
+using Akavache;
 
 namespace Akavache.Models
 {

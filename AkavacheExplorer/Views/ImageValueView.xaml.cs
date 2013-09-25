@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Reactive.Linq;
 using AkavacheExplorer.ViewModels;
-using ReactiveUI.Routing;
 using ReactiveUI;
+using Splat;
 
 namespace AkavacheExplorer.Views
 {
@@ -25,6 +15,14 @@ namespace AkavacheExplorer.Views
         public ImageValueView()
         {
             InitializeComponent();
+
+            this.WhenAny(x => x.ViewModel.Image, x => x.Value)
+                .Where(x => x != null)
+                .Select(x => x.ToNative())
+                .BindTo(this, x => x.Image.Source);
+
+            this.OneWayBind(ViewModel, x => x.ImageVisibility, x => x.Image.Visibility);
+            this.OneWayBind(ViewModel, x => x.ErrorVisibility, x => x.ErrorText.Visibility);
         }
 
         public ImageValueViewModel ViewModel {

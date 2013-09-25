@@ -3,21 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:AkavacheExplorer.Controls" mc:Ignorable="d"  x:Name="userControl"
+             xmlns:rxui="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml"
+             mc:Ignorable="d"  x:Name="userControl"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="DataTemplate1">
+            <ContentPresenter Content="{Binding}" />
+        </DataTemplate>
+    </UserControl.Resources>
     <Border Padding="24">
-		<Grid DataContext="{Binding ViewModel, ElementName=userControl}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-				<ColumnDefinition Width="0.421*"/>
-				<ColumnDefinition Width="0.579*"/>
-			</Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.421*"/>
+                <ColumnDefinition Width="0.579*"/>
+            </Grid.ColumnDefinitions>
 
-			<ListBox ItemsSource="{Binding Keys}" SelectedItem="{Binding SelectedKey, Mode=TwoWay}" Margin="0,0,6,0" Grid.Row="1" />
-			<GridSplitter Width="5" HorizontalAlignment="Right" Background="Gray" Grid.RowSpan="2" />
+            <ListBox x:Name="Keys" Margin="0,0,6,0" Grid.Row="1" ItemTemplate="{DynamicResource DataTemplate1}" />
+            <GridSplitter Width="5" HorizontalAlignment="Right" Background="Gray" Grid.RowSpan="2" />
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <RadioButton x:Name="textRadio" Content="Text" Margin="16,0,0,0" IsChecked="True" Tag="Text"/>
@@ -25,7 +31,7 @@
                 <RadioButton x:Name="imageRadio" Content="Image" Margin="16,0,0,0" Tag="Image" />
             </StackPanel>
 
-            <local:ViewModelViewHost ViewModel="{Binding SelectedValue}" Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" />
-		</Grid>
-	</Border>
+            <rxui:ViewModelViewHost x:Name="SelectedValue" Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" />
+        </Grid>
+    </Border>
 </UserControl>
