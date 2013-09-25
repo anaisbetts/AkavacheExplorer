@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using Akavache;
 using Newtonsoft.Json;
 using ReactiveUI;
+using Splat;
+using System.IO;
 
 namespace AkavacheExplorer.ViewModels
 {
@@ -84,8 +86,8 @@ namespace AkavacheExplorer.ViewModels
             set { this.RaiseAndSetIfChanged(ref _Model, value); }
         }
 
-        ObservableAsPropertyHelper<BitmapImage> _Image;
-        public BitmapImage Image {
+        ObservableAsPropertyHelper<IBitmap> _Image;
+        public IBitmap Image {
             get { return _Image.Value; }
         }
 
@@ -103,8 +105,8 @@ namespace AkavacheExplorer.ViewModels
         {
             this.WhenAny(x => x.Model, x => x.Value)
                 .Where(x => x != null)
-                .SelectMany(BitmapImageMixin.BytesToImage)
-                .LoggedCatch(this, Observable.Return<BitmapImage>(null))
+                .SelectMany(x => BitmapLoader.Current.Load(new MemoryStream(x), null, null))
+                .LoggedCatch(this, Observable.Return<IBitmap>(null))
                 .ToProperty(this, x => x.Image);
 
             this.WhenAny(x => x.Image, x => x.Value != null ? Visibility.Visible : Visibility.Hidden)

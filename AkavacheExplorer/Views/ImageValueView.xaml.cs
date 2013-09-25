@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using AkavacheExplorer.ViewModels;
 using ReactiveUI;
+using Splat;
 
 namespace AkavacheExplorer.Views
 {
@@ -13,6 +14,12 @@ namespace AkavacheExplorer.Views
         public ImageValueView()
         {
             InitializeComponent();
+
+            this.WhenAny(x => x.ViewModel.Image, x => x.Value.ToNative())
+                .BindTo(this, x => x.Image.Source);
+
+            this.OneWayBind(ViewModel, x => x.ImageVisibility, x => x.Image.Visibility);
+            this.OneWayBind(ViewModel, x => x.ErrorVisibility, x => x.ErrorText.Visibility);
         }
 
         public ImageValueViewModel ViewModel {

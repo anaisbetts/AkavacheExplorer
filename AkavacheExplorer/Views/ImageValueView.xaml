@@ -6,11 +6,11 @@
              mc:Ignorable="d" x:Name="userControl"
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <Grid DataContext="{Binding ViewModel, ElementName=userControl}">
+    <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
             <Grid>
-                <Image Source="{Binding Image}" Visibility="{Binding ImageVisibility}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                <TextBlock Text="Couldn't load this as an image" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding ErrorVisibility}" />
+                <Image x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock x:Name="ErrorText" Text="Couldn't load this as an image" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding ErrorVisibility}" />
             </Grid>
         </ScrollViewer>
     </Grid>
