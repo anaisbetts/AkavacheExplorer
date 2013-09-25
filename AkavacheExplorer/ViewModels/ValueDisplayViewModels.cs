@@ -22,7 +22,7 @@ namespace AkavacheExplorer.ViewModels
         byte[] _Model;
         public byte[] Model {
             get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+            set { this.RaiseAndSetIfChanged(ref _Model, value); }
         }
 
         ObservableAsPropertyHelper<string> _TextToDisplay;
@@ -47,7 +47,7 @@ namespace AkavacheExplorer.ViewModels
         byte[] _Model;
         public byte[] Model {
             get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+            set { this.RaiseAndSetIfChanged(ref _Model, value); }
         }
 
         ObservableAsPropertyHelper<string> _TextToDisplay;
@@ -81,7 +81,7 @@ namespace AkavacheExplorer.ViewModels
         public byte[] Model
         {
             get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+            set { this.RaiseAndSetIfChanged(ref _Model, value); }
         }
 
         ObservableAsPropertyHelper<BitmapImage> _Image;

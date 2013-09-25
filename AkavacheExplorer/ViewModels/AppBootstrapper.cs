@@ -2,7 +2,6 @@ using Akavache;
 using AkavacheExplorer.Views;
 using Ninject;
 using ReactiveUI;
-using ReactiveUI.Routing;
 
 namespace AkavacheExplorer.ViewModels
 {
@@ -19,13 +18,13 @@ namespace AkavacheExplorer.ViewModels
         IBlobCache _CurrentCache;
         public IBlobCache CurrentCache {
             get { return _CurrentCache; }
-            set { this.RaiseAndSetIfChanged(x => x.CurrentCache, value); }
+            set { this.RaiseAndSetIfChanged(ref _CurrentCache, value); }
         }
 
         string _CachePath;
         public string CachePath {
             get { return _CachePath; }
-            set { this.RaiseAndSetIfChanged(x => x.CachePath, value); }
+            set { this.RaiseAndSetIfChanged(ref _CachePath, value); }
         }
 
         public AppBootstrapper(IKernel kernel = null, IRoutingState router = null)
@@ -33,13 +32,13 @@ namespace AkavacheExplorer.ViewModels
             kernel = kernel ?? createStandardKernel();
             Router = router ?? new RoutingState();
 
-            RxApp.ConfigureServiceLocator(
+            RxApp.DependencyResolver.ConfigureServiceLocator(
                 (t, s) => kernel.Get(t, s),
                 (t, s) => kernel.GetAll(t, s),
                 (c, t, s) => kernel.Bind(t).To(c));
 
             // Our first screen is "Open cache"
-            Router.Navigate.Execute(RxApp.GetService<IOpenCacheViewModel>());
+            Router.Navigate.Execute(RxApp.DependencyResolver.GetService<IOpenCacheViewModel>());
         }
 
         IKernel createStandardKernel()

@@ -2,7 +2,6 @@
 using System.Reactive.Linq;
 using System.Windows;
 using ReactiveUI;
-using ReactiveUI.Routing;
 using ReactiveUI.Xaml;
 
 // NB: This is to work around a glitched version of this in RxUI <= 3.1.2

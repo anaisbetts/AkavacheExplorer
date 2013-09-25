@@ -3,13 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using ReactiveUI;
-using ReactiveUI.Routing;
 
 namespace AkavacheExplorer.ViewModels
 {
     public interface ICacheViewModel : IRoutableViewModel
     {
-        ReactiveCollection<string> Keys { get; }
+        ReactiveList<string> Keys { get; }
         string SelectedKey { get; set; }
         ICacheValueViewModel SelectedValue { get; }
         string SelectedViewer { get; set; }
@@ -17,12 +16,12 @@ namespace AkavacheExplorer.ViewModels
 
     public class CacheViewModel : ReactiveObject, ICacheViewModel
     {
-        public ReactiveCollection<string> Keys { get; protected set; }
+        public ReactiveList<string> Keys { get; protected set; }
 
         string _SelectedKey;
         public string SelectedKey {
             get { return _SelectedKey; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedKey, value); }
+            set { this.RaiseAndSetIfChanged(ref _SelectedKey, value); }
         }
 
         ObservableAsPropertyHelper<ICacheValueViewModel> _SelectedValue;
@@ -33,7 +32,7 @@ namespace AkavacheExplorer.ViewModels
         string _SelectedViewer;
         public string SelectedViewer {
             get { return _SelectedViewer; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedViewer, value); }
+            set { this.RaiseAndSetIfChanged(ref _SelectedViewer, value); }
         }
 
         ObservableAsPropertyHelper<string> _UrlPathSegment;
@@ -52,7 +51,7 @@ namespace AkavacheExplorer.ViewModels
                 .Select(x => (new DirectoryInfo(x)).Name)
                 .ToProperty(this, x => x.UrlPathSegment);
 
-            Keys = new ReactiveCollection<string>();
+            Keys = new ReactiveList<string>();
             appState.WhenAny(x => x.CurrentCache, x => x.Value).Subscribe(cache => {
                 Keys.Clear();
                 cache.GetAllKeys().ForEach(x => Keys.Add(x));
@@ -70,7 +69,7 @@ namespace AkavacheExplorer.ViewModels
 
         static ICacheValueViewModel createValueViewModel(byte[] x, string viewerType)
         {
-            var ret = RxApp.GetService<ICacheValueViewModel>(viewerType);
+            var ret = RxApp.DependencyResolver.GetService<ICacheValueViewModel>(viewerType);
             ret.Model = x;
             return ret;
         }
