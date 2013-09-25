@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using ReactiveUI;
 using Splat;
 using System.IO;
+using Newtonsoft.Json.Bson;
 
 namespace AkavacheExplorer.ViewModels
 {
@@ -61,13 +62,19 @@ namespace AkavacheExplorer.ViewModels
         {
             this.WhenAny(x => x.Model, x => x.Value)
                 .Where(x => x != null)
-                .Select(x => {
-                    var ret = Encoding.UTF8.GetString(x);
-                    return ret;
-                })
-                .Select<string, string>(x => {
+                .Select<byte[], string>(x => {
+                    // Check to see if this is BSON
+                    bool isBSON = x.Any(y => (int)y > 128);
                     try {
-                        dynamic ret = JsonConvert.DeserializeObject(x);
+                        var ret = default(dynamic);
+                        if (isBSON) {
+                            var br = new BsonReader(new MemoryStream(x));
+                            var serializer = new JsonSerializer();
+                            ret = serializer.Deserialize(br);
+                        } else {
+                            ret = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(x));
+                        }
+
                         return JsonConvert.SerializeObject(ret, Formatting.Indented);
                     } catch (Exception ex) {
                         return ex.ToString();
