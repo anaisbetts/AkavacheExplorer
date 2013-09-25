@@ -13,6 +13,12 @@ namespace AkavacheExplorer.Views
         public OpenCacheView()
         {
             InitializeComponent();
+
+            this.Bind(ViewModel, x => x.CachePath, x => x.CachePath.Text);
+            this.Bind(ViewModel, x => x.OpenAsEncryptedCache, x => x.OpenAsEncryptedCache.IsChecked);
+            this.Bind(ViewModel, x => x.OpenAsSqlite3Cache, x => x.OpenAsSqlite3Cache.IsChecked);
+
+            this.BindCommand(ViewModel, x => x.OpenCache, x => x.OpenCache);
         }
 
         public OpenCacheViewModel ViewModel {

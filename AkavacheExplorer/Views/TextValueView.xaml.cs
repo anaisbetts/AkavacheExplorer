@@ -13,6 +13,8 @@ namespace AkavacheExplorer.Views
         public TextValueView()
         {
             InitializeComponent();
+
+            this.OneWayBind(ViewModel, x => x.TextToDisplay, x => x.TextToDisplay.Text);
         }
 
         public TextValueViewModel ViewModel {

@@ -64,7 +64,7 @@ namespace AkavacheExplorer.ViewModels
                 .SelectMany(x => appState.CurrentCache.GetAsync(x))
                 .Select(x => createValueViewModel(x, SelectedViewer))
                 .LoggedCatch(this, Observable.Return<ICacheValueViewModel>(null))
-                .ToProperty(this, x => x.SelectedValue);
+                .ToProperty(this, x => x.SelectedValue, out _SelectedValue);
         }
 
         static ICacheValueViewModel createValueViewModel(byte[] x, string viewerType)

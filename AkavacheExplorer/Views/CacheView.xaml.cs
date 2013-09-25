@@ -24,6 +24,10 @@ namespace AkavacheExplorer.Views
                     .Merge()
                     .Subscribe(x => ViewModel.SelectedViewer = (string)x);
             });
+
+            this.OneWayBind(ViewModel, x => x.Keys, x => x.Keys.ItemsSource);
+            this.Bind(ViewModel, x => x.SelectedKey, x => x.Keys.SelectedItem);
+            this.OneWayBind(ViewModel, x => x.SelectedKey, x => x.SelectedKey.ViewModel);
         }
 
         public CacheViewModel ViewModel {

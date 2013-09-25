@@ -13,6 +13,8 @@ namespace AkavacheExplorer.Views
         public JsonValueView()
         {
             InitializeComponent();
+
+            this.OneWayBind(ViewModel, x => x.TextToDisplay, x => x.TextToDisplay.Text);
         }
 
         public JsonValueViewModel ViewModel {
