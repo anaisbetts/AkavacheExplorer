@@ -6,6 +6,11 @@
              xmlns:rxui="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml"
              mc:Ignorable="d"  x:Name="userControl"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="DataTemplate1">
+            <ContentPresenter Content="{Binding}" />
+        </DataTemplate>
+    </UserControl.Resources>
     <Border Padding="24">
         <Grid>
             <Grid.RowDefinitions>
@@ -13,12 +18,12 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-				<ColumnDefinition Width="0.421*"/>
-				<ColumnDefinition Width="0.579*"/>
-			</Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.421*"/>
+                <ColumnDefinition Width="0.579*"/>
+            </Grid.ColumnDefinitions>
 
-			<ListBox x:Name="Keys" Margin="0,0,6,0" Grid.Row="1" />
-			<GridSplitter Width="5" HorizontalAlignment="Right" Background="Gray" Grid.RowSpan="2" />
+            <ListBox x:Name="Keys" Margin="0,0,6,0" Grid.Row="1" ItemTemplate="{DynamicResource DataTemplate1}" />
+            <GridSplitter Width="5" HorizontalAlignment="Right" Background="Gray" Grid.RowSpan="2" />
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <RadioButton x:Name="textRadio" Content="Text" Margin="16,0,0,0" IsChecked="True" Tag="Text"/>
@@ -27,6 +32,6 @@
             </StackPanel>
 
             <rxui:ViewModelViewHost x:Name="SelectedKey" Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" />
-		</Grid>
-	</Border>
+        </Grid>
+    </Border>
 </UserControl>
