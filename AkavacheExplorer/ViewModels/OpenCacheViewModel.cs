@@ -62,6 +62,7 @@ namespace AkavacheExplorer.ViewModels
 
             OpenCache.SelectMany(_ => openAkavacheCache(CachePath, OpenAsEncryptedCache, OpenAsSqlite3Cache))
                 .LoggedCatch(this, Observable.Return<IBlobCache>(null))
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(x => {
                     if (x == null) {
                         UserError.Throw("Couldn't open this cache");
@@ -69,7 +70,7 @@ namespace AkavacheExplorer.ViewModels
                     }
 
                     appState.CurrentCache = x;
-                    hostScreen.Router.Navigate.Execute(new CacheViewModel(HostScreen, appState));
+                    hostScreen.Router.Navigate.Execute(new CacheViewModel(hostScreen, appState));
                 });
         }
 
@@ -79,10 +80,10 @@ namespace AkavacheExplorer.ViewModels
 
             if (openAsSqlite3) {
                 ret = Observable.Start(() => openAsEncrypted ?
-                    (IBlobCache)new Akavache.Sqlite3.EncryptedBlobCache(path) : (IBlobCache)new SqlitePersistentBlobCache(path));
+                    (IBlobCache)new Akavache.Sqlite3.EncryptedBlobCache(path) : (IBlobCache)new SqlitePersistentBlobCache(path), RxApp.TaskpoolScheduler);
             } else {
                 ret = Observable.Start(() => openAsEncrypted ?
-                    (IBlobCache)new ReadonlyEncryptedBlobCache(path) : (IBlobCache)new ReadonlyBlobCache(path));
+                    (IBlobCache)new ReadonlyEncryptedBlobCache(path) : (IBlobCache)new ReadonlyBlobCache(path), RxApp.TaskpoolScheduler);
             }
                 
             return ret.SelectMany(x => x.GetAllKeys().Any() ? 
