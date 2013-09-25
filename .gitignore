@@ -64,7 +64,6 @@ local.properties
 *.vspscc
 .builds
 **/*.dotCover
-**/packages/
 
 # Visual C++ cache files
 ipch/
@@ -161,6 +160,3 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
-
-packages
-AkavacheExplorer/.nuget

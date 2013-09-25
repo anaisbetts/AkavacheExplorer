@@ -9,6 +9,9 @@ using System.Windows.Media.Imaging;
 using Akavache;
 using Newtonsoft.Json;
 using ReactiveUI;
+using Splat;
+using System.IO;
+using Newtonsoft.Json.Bson;
 
 namespace AkavacheExplorer.ViewModels
 {
@@ -22,7 +25,7 @@ namespace AkavacheExplorer.ViewModels
         byte[] _Model;
         public byte[] Model {
             get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+            set { this.RaiseAndSetIfChanged(ref _Model, value); }
         }
 
         ObservableAsPropertyHelper<string> _TextToDisplay;
@@ -38,7 +41,7 @@ namespace AkavacheExplorer.ViewModels
                     var ret = Encoding.UTF8.GetString(x);
                     return ret;
                 })
-                .ToProperty(this, x => x.TextToDisplay);
+                .ToProperty(this, x => x.TextToDisplay, out _TextToDisplay);
         }
     }
 
@@ -47,7 +50,7 @@ namespace AkavacheExplorer.ViewModels
         byte[] _Model;
         public byte[] Model {
             get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+            set { this.RaiseAndSetIfChanged(ref _Model, value); }
         }
 
         ObservableAsPropertyHelper<string> _TextToDisplay;
@@ -59,19 +62,25 @@ namespace AkavacheExplorer.ViewModels
         {
             this.WhenAny(x => x.Model, x => x.Value)
                 .Where(x => x != null)
-                .Select(x => {
-                    var ret = Encoding.UTF8.GetString(x);
-                    return ret;
-                })
-                .Select<string, string>(x => {
+                .Select<byte[], string>(x => {
+                    // Check to see if this is BSON
+                    bool isBSON = x.Any(y => (int)y > 128);
                     try {
-                        dynamic ret = JsonConvert.DeserializeObject(x);
+                        var ret = default(dynamic);
+                        if (isBSON) {
+                            var br = new BsonReader(new MemoryStream(x));
+                            var serializer = new JsonSerializer();
+                            ret = serializer.Deserialize(br);
+                        } else {
+                            ret = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(x));
+                        }
+
                         return JsonConvert.SerializeObject(ret, Formatting.Indented);
                     } catch (Exception ex) {
                         return ex.ToString();
                     }
                 })
-                .ToProperty(this, x => x.TextToDisplay);
+                .ToProperty(this, x => x.TextToDisplay, out _TextToDisplay);
         }
     }
 
@@ -81,11 +90,11 @@ namespace AkavacheExplorer.ViewModels
         public byte[] Model
         {
             get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+            set { this.RaiseAndSetIfChanged(ref _Model, value); }
         }
 
-        ObservableAsPropertyHelper<BitmapImage> _Image;
-        public BitmapImage Image {
+        ObservableAsPropertyHelper<IBitmap> _Image;
+        public IBitmap Image {
             get { return _Image.Value; }
         }
 
@@ -103,14 +112,14 @@ namespace AkavacheExplorer.ViewModels
         {
             this.WhenAny(x => x.Model, x => x.Value)
                 .Where(x => x != null)
-                .SelectMany(BitmapImageMixin.BytesToImage)
-                .LoggedCatch(this, Observable.Return<BitmapImage>(null))
-                .ToProperty(this, x => x.Image);
+                .SelectMany(x => BitmapLoader.Current.Load(new MemoryStream(x), null, null))
+                .LoggedCatch(this, Observable.Return<IBitmap>(null))
+                .ToProperty(this, x => x.Image, out _Image);
 
             this.WhenAny(x => x.Image, x => x.Value != null ? Visibility.Visible : Visibility.Hidden)
-                .ToProperty(this, x => x.ImageVisibility);
+                .ToProperty(this, x => x.ImageVisibility, out _ImageVisibility);
             this.WhenAny(x => x.ImageVisibility, x => x.Value == Visibility.Visible ? Visibility.Hidden : Visibility.Visible)
-                .ToProperty(this, x => x.ErrorVisibility);
+                .ToProperty(this, x => x.ErrorVisibility, out _ErrorVisibility);
         }
     }
 }

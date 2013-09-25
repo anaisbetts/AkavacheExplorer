@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"  x:Name="userControl"
              d:DesignHeight="300" d:DesignWidth="600">
-    <Grid DataContext="{Binding Path=ViewModel, ElementName=userControl}">
+    <Grid>
     	<Grid.ColumnDefinitions>
     		<ColumnDefinition Width="Auto" />
     		<ColumnDefinition/>
@@ -21,10 +21,10 @@
 		
     	<TextBlock Grid.ColumnSpan="2" Margin="8" TextWrapping="Wrap" Text="Open an Akavache Cache" FontSize="29.333" />
     	<TextBlock Margin="8" Grid.Row="1" TextWrapping="Wrap" Text="Path:" HorizontalAlignment="Right" VerticalAlignment="Center" />
-    	<TextBox Grid.Column="1" Margin="8" Grid.Row="1" TextWrapping="Wrap" Text="{Binding CachePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-    	<CheckBox Content="Open as Encrypted Cache" Grid.Column="1" Margin="8" Grid.Row="2" VerticalAlignment="Top" IsChecked="{Binding OpenAsEncryptedCache, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-    	<CheckBox Content="Open as SQLite3 Cache" Grid.Column="1" Margin="8" Grid.Row="3" VerticalAlignment="Top" IsChecked="{Binding OpenAsSqlite3Cache, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    	<TextBox x:Name="CachePath" Grid.Column="1" Margin="8" Grid.Row="1" TextWrapping="Wrap" />
+    	<CheckBox x:Name="OpenAsEncryptedCache" Content="Open as Encrypted Cache" Grid.Column="1" Margin="8" Grid.Row="2" VerticalAlignment="Top" />
+    	<CheckBox x:Name="OpenAsSqlite3Cache" Content="Open as SQLite3 Cache" Grid.Column="1" Margin="8" Grid.Row="3" VerticalAlignment="Top" />
 
-    	<Button Content="Ok" Grid.Column="1" Margin="8" Grid.Row="5" HorizontalAlignment="Right" MinWidth="64" Command="{Binding OpenCache}" />
+    	<Button x:Name="OpenCache" Content="Ok" Grid.Column="1" Margin="8" Grid.Row="5" HorizontalAlignment="Right" MinWidth="64" />
     </Grid>
 </UserControl>
