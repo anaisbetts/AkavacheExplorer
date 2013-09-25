@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Reactive.Linq;
 using AkavacheExplorer.ViewModels;
 using ReactiveUI;
 using Splat;
@@ -15,7 +16,9 @@ namespace AkavacheExplorer.Views
         {
             InitializeComponent();
 
-            this.WhenAny(x => x.ViewModel.Image, x => x.Value.ToNative())
+            this.WhenAny(x => x.ViewModel.Image, x => x.Value)
+                .Where(x => x != null)
+                .Select(x => x.ToNative())
                 .BindTo(this, x => x.Image.Source);
 
             this.OneWayBind(ViewModel, x => x.ImageVisibility, x => x.Image.Visibility);

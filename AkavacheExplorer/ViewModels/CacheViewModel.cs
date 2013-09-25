@@ -62,9 +62,9 @@ namespace AkavacheExplorer.ViewModels
 
             SelectedViewer = "Text";
 
-            this.WhenAny(x => x.SelectedKey, x => x.SelectedViewer, (k,v) => k.Value)
+            this.WhenAny(x => x.SelectedKey, x => x.SelectedViewer, (k, v) => k.Value)
                 .Where(x => x != null && SelectedViewer != null)
-                .SelectMany(x => appState.CurrentCache.GetAsync(x))
+                .SelectMany(x => appState.CurrentCache.GetAsync(x).Catch(Observable.Return(default(byte[]))))
                 .Select(x => createValueViewModel(x, SelectedViewer))
                 .LoggedCatch(this, Observable.Return<ICacheValueViewModel>(null))
                 .ToProperty(this, x => x.SelectedValue, out _SelectedValue);
@@ -72,6 +72,8 @@ namespace AkavacheExplorer.ViewModels
 
         static ICacheValueViewModel createValueViewModel(byte[] x, string viewerType)
         {
+            if (x == null) return null;
+
             // NB: This trick is bad and I should feel bad. These strings come 
             // from the Tag property in CacheView.xaml.
             switch (viewerType) {
