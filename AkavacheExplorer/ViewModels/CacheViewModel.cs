@@ -52,10 +52,13 @@ namespace AkavacheExplorer.ViewModels
                 .ToProperty(this, x => x.UrlPathSegment);
 
             Keys = new ReactiveList<string>();
-            appState.WhenAny(x => x.CurrentCache, x => x.Value).Subscribe(cache => {
-                Keys.Clear();
-                cache.GetAllKeys().ForEach(x => Keys.Add(x));
-            });
+            appState.WhenAny(x => x.CurrentCache, x => x.Value)
+                .SelectMany(x => Observable.Start(() => x.GetAllKeys(), RxApp.TaskpoolScheduler))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(newKeys => {
+                    Keys.Clear();
+                    newKeys.ForEach(x => Keys.Add(x));
+                });
 
             SelectedViewer = "Text";
 
