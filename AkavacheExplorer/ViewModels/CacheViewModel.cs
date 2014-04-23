@@ -17,6 +17,7 @@ namespace AkavacheExplorer.ViewModels
     public class CacheViewModel : ReactiveObject, ICacheViewModel
     {
         public ReactiveList<string> Keys { get; protected set; }
+        public IReactiveDerivedList<string> FilteredKeys { get; protected set; }
 
         string _SelectedKey;
         public string SelectedKey {
@@ -35,7 +36,15 @@ namespace AkavacheExplorer.ViewModels
             set { this.RaiseAndSetIfChanged(ref _SelectedViewer, value); }
         }
 
-        ObservableAsPropertyHelper<string> _UrlPathSegment;
+        string _FilterText;
+        public string FilterText
+        {
+            get { return _FilterText; }
+            set { this.RaiseAndSetIfChanged(ref _FilterText, value); }
+        }
+
+
+        readonly ObservableAsPropertyHelper<string> _UrlPathSegment;
         public string UrlPathSegment {
             get { return _UrlPathSegment.Value; }
         }
@@ -59,6 +68,11 @@ namespace AkavacheExplorer.ViewModels
                     Keys.Clear();
                     newKeys.ForEach(x => Keys.Add(x));
                 });
+
+            FilteredKeys = Keys.CreateDerivedCollection(
+                key => key,
+                key => FilterText == null || key.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) > -1,
+                signalReset: this.WhenAny(x => x.FilterText, x => x.Value));
 
             SelectedViewer = "Text";
 
