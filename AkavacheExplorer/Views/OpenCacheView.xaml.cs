@@ -19,6 +19,7 @@ namespace AkavacheExplorer.Views
             this.Bind(ViewModel, x => x.OpenAsSqlite3Cache, x => x.OpenAsSqlite3Cache.IsChecked);
 
             this.BindCommand(ViewModel, x => x.OpenCache, x => x.OpenCache);
+            this.BindCommand(ViewModel, x => x.BrowseForCache, x => x.browseButton);
         }
 
         public OpenCacheViewModel ViewModel {

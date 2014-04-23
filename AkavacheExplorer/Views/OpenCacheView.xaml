@@ -6,25 +6,26 @@
              mc:Ignorable="d"  x:Name="userControl"
              d:DesignHeight="300" d:DesignWidth="600">
     <Grid>
-    	<Grid.ColumnDefinitions>
-    		<ColumnDefinition Width="Auto" />
-    		<ColumnDefinition/>
-    	</Grid.ColumnDefinitions>
-    	<Grid.RowDefinitions>
-    		<RowDefinition Height="Auto" />
-    		<RowDefinition Height="Auto" />
-    		<RowDefinition Height="Auto" />
-    		<RowDefinition Height="Auto" />
-    		<RowDefinition/>
-    		<RowDefinition Height="Auto" />
-    	</Grid.RowDefinitions>
-		
-    	<TextBlock Grid.ColumnSpan="2" Margin="8" TextWrapping="Wrap" Text="Open an Akavache Cache" FontSize="29.333" />
-    	<TextBlock Margin="8" Grid.Row="1" TextWrapping="Wrap" Text="Path:" HorizontalAlignment="Right" VerticalAlignment="Center" />
-    	<TextBox x:Name="CachePath" Grid.Column="1" Margin="8" Grid.Row="1" TextWrapping="Wrap" />
-    	<CheckBox x:Name="OpenAsEncryptedCache" Content="Open as Encrypted Cache" Grid.Column="1" Margin="8" Grid.Row="2" VerticalAlignment="Top" />
-    	<CheckBox x:Name="OpenAsSqlite3Cache" Content="Open as SQLite3 Cache" Grid.Column="1" Margin="8" Grid.Row="3" VerticalAlignment="Top" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.ColumnSpan="2" Margin="8" TextWrapping="Wrap" Text="Open an Akavache Cache" FontSize="29.333" />
+        <TextBlock Margin="8" Grid.Row="1" TextWrapping="Wrap" Text="Path:" HorizontalAlignment="Right" VerticalAlignment="Center" />
+        <TextBox x:Name="CachePath" Grid.Column="1" Margin="7.6,7.8,73,7.8" Grid.Row="1" TextWrapping="Wrap" />
+        <Button x:Name="browseButton" Grid.Row="1" Grid.Column="1" Content="Browse" MinWidth="64" HorizontalAlignment="Right" Margin="4" />
+        <CheckBox x:Name="OpenAsEncryptedCache" Content="Open as Encrypted Cache" Grid.Column="1" Margin="8" Grid.Row="2" VerticalAlignment="Top" />
+        <CheckBox x:Name="OpenAsSqlite3Cache" Content="Open as SQLite3 Cache" Grid.Column="1" Margin="8" Grid.Row="3" VerticalAlignment="Top" />
 
-    	<Button x:Name="OpenCache" Content="Ok" Grid.Column="1" Margin="8" Grid.Row="5" HorizontalAlignment="Right" MinWidth="64" />
+        <Button x:Name="OpenCache" Content="Ok" Grid.Column="1" Margin="8" Grid.Row="5" HorizontalAlignment="Right" MinWidth="64" />
     </Grid>
 </UserControl>
